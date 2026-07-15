@@ -79,6 +79,13 @@ from controller.order_controller import OrderController
   (`read_input`, `read_int`, `read_float`, `print_header`). `sample_view.py`는 스펙에 명시된
   등록/조회/검색 외에, `sample_controller.update_sample`/`delete_sample`을 통해 시료 수정/삭제
   메뉴도 함께 제공합니다(스펙 범위를 넘어선 추가 기능).
+  - `base_view.print_table(headers, rows)` — 모든 목록성 화면(시료 조회/검색, 접수된 주문
+    목록, 출고 대상 목록, 생산 현황/대기 큐, 모니터링)이 공유하는 테이블 출력 헬퍼입니다.
+    각 컬럼의 최대 문자 길이에 맞춰 `ljust`로 정렬하고 `-+-`로 헤더 구분선을 그립니다(한글은
+    문자 개수 기준이라 실제 표시 폭과는 다소 어긋날 수 있습니다).
+  - `monitoring_view.py`는 `_show_order_counts`(상태별 건수)와 `_show_stock_status`
+    (시료별 재고/수요/여유·부족·고갈)를 모두 `print_table`로 렌더링합니다. 예시 출력은
+    [README.md](README.md#모니터링-출력-예시)를 참고하세요.
 
 - **main.py** — 오직 조립(composition root) 역할만 합니다. 두 Repository와
   `ProductionLine`을 생성하고, 모든 Controller와 View를 연결한 뒤 `MainView.run()`을
