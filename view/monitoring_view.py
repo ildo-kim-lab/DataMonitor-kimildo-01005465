@@ -1,4 +1,4 @@
-from view.base_view import print_header, read_input
+from view.base_view import print_header, read_input, print_table
 
 
 class MonitoringView:
@@ -23,13 +23,17 @@ class MonitoringView:
 
     def _show_order_counts(self):
         counts = self.monitoring_controller.order_counts()
-        for status, count in counts.items():
-            print(f"{status.value}: {count}건")
+        print_table(
+            ["상태", "건수"],
+            [[status.value, count] for status, count in counts.items()],
+        )
 
     def _show_stock_status(self):
         rows = self.monitoring_controller.stock_status()
         if not rows:
             print("등록된 시료가 없습니다.")
             return
-        for sample, demand, state in rows:
-            print(f"{sample.name} | 재고:{sample.stock} | 주문대비 수요:{demand} | 상태:{state}")
+        print_table(
+            ["시료", "재고", "주문대비 수요", "상태"],
+            [[sample.name, sample.stock, demand, state] for sample, demand, state in rows],
+        )

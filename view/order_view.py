@@ -1,4 +1,4 @@
-from view.base_view import print_header, read_input, read_int
+from view.base_view import print_header, read_input, read_int, print_table
 
 
 class OrderView:
@@ -42,8 +42,10 @@ class OrderView:
         if not orders:
             print("접수된 주문이 없습니다.")
             return
-        for o in orders:
-            print(f"{o.order_id} | 시료:{o.sample_id} | 고객:{o.customer_name} | 수량:{o.quantity}")
+        print_table(
+            ["주문번호", "시료", "고객", "수량"],
+            [[o.order_id, o.sample_id, o.customer_name, o.quantity] for o in orders],
+        )
 
     def _approve_order(self):
         order_id = read_int("승인할 주문번호: ")

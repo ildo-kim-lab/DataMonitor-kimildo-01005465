@@ -1,4 +1,4 @@
-from view.base_view import print_header, read_input, read_float
+from view.base_view import print_header, read_input, read_float, print_table
 
 
 class SampleView:
@@ -44,9 +44,10 @@ class SampleView:
         if not samples:
             print("등록된 시료가 없습니다.")
             return
-        print(f"{'ID':<10}{'이름':<15}{'평균생산시간':<15}{'수율':<10}{'재고':<10}")
-        for s in samples:
-            print(f"{s.sample_id:<10}{s.name:<15}{s.avg_production_time:<15}{s.yield_rate:<10}{s.stock:<10}")
+        print_table(
+            ["ID", "이름", "평균생산시간", "수율", "재고"],
+            [[s.sample_id, s.name, s.avg_production_time, s.yield_rate, s.stock] for s in samples],
+        )
 
     def _search_samples(self):
         keyword = read_input("검색어(이름): ")
@@ -54,8 +55,10 @@ class SampleView:
         if not samples:
             print("검색 결과가 없습니다.")
             return
-        for s in samples:
-            print(f"{s.sample_id} | {s.name} | 재고 {s.stock}")
+        print_table(
+            ["ID", "이름", "재고"],
+            [[s.sample_id, s.name, s.stock] for s in samples],
+        )
 
     def _update_sample(self):
         sample_id = read_input("수정할 시료 ID: ")

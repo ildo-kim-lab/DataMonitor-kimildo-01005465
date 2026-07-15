@@ -5,6 +5,19 @@ def print_header(title):
     print("=" * 40)
 
 
+def print_table(headers, rows):
+    columns = [headers] + [[str(cell) for cell in row] for row in rows]
+    widths = [max(len(col[i]) for col in columns) for i in range(len(headers))]
+
+    def format_row(cells):
+        return " | ".join(cell.ljust(width) for cell, width in zip(cells, widths))
+
+    print(format_row(headers))
+    print("-+-".join("-" * width for width in widths))
+    for row in rows:
+        print(format_row([str(cell) for cell in row]))
+
+
 def read_input(prompt):
     return input(prompt).replace("﻿", "").strip()
 

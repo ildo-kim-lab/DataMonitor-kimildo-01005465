@@ -1,4 +1,4 @@
-from view.base_view import print_header, read_input
+from view.base_view import print_header, read_input, print_table
 
 
 class ProductionView:
@@ -29,17 +29,21 @@ class ProductionView:
         if job is None:
             print("현재 생산 중인 시료가 없습니다.")
             return
-        print(f"시료:{job.sample.name} | 주문번호:{job.order.order_id} | "
-              f"실생산량:{job.actual_quantity} | 진행량:{job.produced_quantity} | "
-              f"총생산시간:{job.total_time}")
+        print_table(
+            ["시료", "주문번호", "실생산량", "진행량", "총생산시간"],
+            [[job.sample.name, job.order.order_id, job.actual_quantity,
+              job.produced_quantity, job.total_time]],
+        )
 
     def _show_queue(self):
         jobs = self.production_controller.queued_jobs()
         if not jobs:
             print("대기 중인 생산 작업이 없습니다.")
             return
-        for job in jobs:
-            print(f"주문번호:{job.order.order_id} | 시료:{job.sample.name} | 실생산량:{job.actual_quantity}")
+        print_table(
+            ["주문번호", "시료", "실생산량"],
+            [[job.order.order_id, job.sample.name, job.actual_quantity] for job in jobs],
+        )
 
     def _complete_current_job(self):
         ok, result = self.production_controller.complete_current_job()
